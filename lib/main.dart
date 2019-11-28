@@ -1,99 +1,29 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:video_player/video_player.dart';
-import 'package:flutter/services.dart';
+import 'route.dart';
 
-void main() => runApp(Video());
+void main() => runApp(Home());
 
-class Video extends StatefulWidget {
+class Home extends StatelessWidget {
   @override
-  _VideoState createState() => _VideoState();
-}
-
-class _VideoState extends State<Video> {
-  VideoPlayerController _controller;
-  bool _isPlaying = false;
-  bool _isLoop = true;
-  @override
-  void initState() {
-    super.initState();
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.landscapeRight,
-      DeviceOrientation.landscapeLeft,
-    ]);
-    _controller = VideoPlayerController.network(
-      'https://firebasestorage.googleapis.com/v0/b/flutter-884a9.appspot.com/o/AFTER.mp4?alt=media&token=e4d0842d-4a73-4012-854d-8e11f73f67f4',
-    )
-      ..addListener(() {
-        final bool isPlaying = _controller.value.isPlaying;
-        if (isPlaying != _isPlaying) {
-          setState(() {
-            _isPlaying = isPlaying;
-          });
-        }
-        _isLoop = _controller.value.isLooping;
-      })
-      ..initialize().then((_) {
-        // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
-        setState(() {});
-      });
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        // This is the theme of your application.
+        //
+        // Try running your application with "flutter run". You'll see the
+        // application has a blue toolbar. Then, without quitting the app, try
+        // changing the primarySwatch below to Colors.green and then invoke
+        // "hot reload" (press "r" in the console where you ran "flutter run",
+        // or simply save your changes to "hot reload" in a Flutter IDE).
+        // Notice that the counter didn't reset back to zero; the application
+        // is not restarted.
+        primarySwatch: Colors.grey,
+      ),
+      // home: new ImagesPage(),
+      // home: new ViewScreen(),
+      initialRoute: '/',
+      onGenerateRoute: RouteGen.genRoute,
+    );
   }
-
-  @override
-  Widget build(BuildContext context) => MaterialApp(
-        title: 'Video Player',
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData.dark(),
-        home: Scaffold(
-          body: Center(
-            child: _controller.value.initialized
-                ? AspectRatio(
-                    aspectRatio: _controller.value.aspectRatio,
-                    child: VideoPlayer(_controller),
-                  )
-                : Container(),
-          ),
-          floatingActionButton: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              InkWell(
-                onTap: () {
-                  setState(() {
-                    if (_controller.value.isPlaying)
-                      _controller.pause();
-                    else {
-                      if (_controller.value.position ==
-                          _controller.value.duration)
-                        _controller.seekTo(Duration.zero);
-                      _controller.play();
-                    }
-                  });
-
-                  log(' video pos? ${_controller.value.position}');
-                  log(' video dur? ${_controller.value.duration}');
-                },
-                child: Icon(
-                  _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
-                  size: 30,
-                ),
-              ),
-              SizedBox(width: 8),
-              InkWell(
-                onTap: () {
-                  setState(() {
-                    _isLoop = !_isLoop;
-                    _controller..setLooping(_isLoop);
-                  });
-                  log('loop ${_controller.value.isLooping}');
-                },
-                child: Icon(
-                  _controller.value.isLooping ? Icons.loop : Icons.local_movies,
-                  size: 30,
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
 }
