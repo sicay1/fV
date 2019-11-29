@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:progress_indicators/progress_indicators.dart';
 import 'package:video_player/video_player.dart';
 
 class VideoScreen extends StatefulWidget {
@@ -14,7 +15,7 @@ class _VideoState extends State<VideoScreen> {
   @override
   void initState() {
     super.initState();
-    
+
     _controller = VideoPlayerController.network(
       'https://firebasestorage.googleapis.com/v0/b/flutter-884a9.appspot.com/o/AFTER.mp4?alt=media&token=e4d0842d-4a73-4012-854d-8e11f73f67f4',
     )
@@ -35,25 +36,41 @@ class _VideoState extends State<VideoScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      // title: 'Video Player',
-      appBar: new AppBar(),
-      // debugShowCheckedModeBanner: false,
-      // theme: ThemeData.dark(),
-      body: Scaffold(
-        body: Center(
-          child: _controller.value.initialized
-              ? AspectRatio(
-                  aspectRatio: _controller.value.aspectRatio,
-                  child: VideoPlayer(_controller),
-                )
-              : Container(),
-        ),
-        floatingActionButton: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
+    return Material(
+      child: Stack(
+        children: <Widget>[
+          videoSection(),
+          videoControls(),
+          backToHomeScreen(context),
+        ],
+      ),
+    );
+  }
+
+  Center videoSection() {
+    return Center(
+      child: _controller.value.initialized
+          ? AspectRatio(
+              aspectRatio: _controller.value.aspectRatio,
+              child: VideoPlayer(_controller),
+            )
+          : Container(
+              child: JumpingText('Loading...', style: TextStyle(fontSize: 30)),
+            ),
+    );
+  }
+
+  Align videoControls() {
+    return Align(
+      alignment: FractionalOffset.bottomCenter,
+      child: Container(
+        height: 40,
+        width: 300,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            InkWell(
-              onTap: () {
+            IconButton(
+              onPressed: () {
                 setState(() {
                   if (_controller.value.isPlaying)
                     _controller.pause();
@@ -64,31 +81,42 @@ class _VideoState extends State<VideoScreen> {
                     _controller.play();
                   }
                 });
-
-                log(' video pos? ${_controller.value.position}');
-                log(' video dur? ${_controller.value.duration}');
               },
-              child: Icon(
-                _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
-                size: 30,
-              ),
+              icon: Icon(
+                  _controller.value.isPlaying ? Icons.pause : Icons.play_arrow),
+              iconSize: 30,
             ),
             SizedBox(width: 8),
-            InkWell(
-              onTap: () {
+            IconButton(
+              onPressed: () {
                 setState(() {
                   _isLoop = !_isLoop;
                   _controller..setLooping(_isLoop);
                 });
                 log('loop ${_controller.value.isLooping}');
               },
-              child: Icon(
-                _controller.value.isLooping ? Icons.loop : Icons.local_movies,
-                size: 30,
-              ),
+              icon: Icon(_controller.value.isLooping
+                  ? Icons.loop
+                  : Icons.local_movies),
+              iconSize: 30,
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  SafeArea backToHomeScreen(BuildContext context) {
+    return SafeArea(
+      child: Container(
+        height: 30,
+        width: 30,
+        alignment: Alignment.topLeft,
+        child: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(Icons.home, size: 30)),
       ),
     );
   }
@@ -99,4 +127,3 @@ class _VideoState extends State<VideoScreen> {
     _controller.dispose();
   }
 }
-
