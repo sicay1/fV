@@ -7,6 +7,7 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         // This is the theme of your application.
@@ -23,7 +24,7 @@ class Home extends StatelessWidget {
       // home: new ImagesPage(),
       // home: new ViewScreen(),
       initialRoute: '/',
-      onGenerateRoute: RouteGen.genRoute,
+      onGenerateRoute: RouteGen.appRouter,
     );
   }
 }
