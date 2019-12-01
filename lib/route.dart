@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:videoplayer1/screens/HomeScreen.dart';
 import 'package:videoplayer1/screens/VideoScreen.dart';
+import 'screens/Home/HomeScreen.dart';
 
 class RouteGen {
   static Route<dynamic> appRouter(RouteSettings settings) {

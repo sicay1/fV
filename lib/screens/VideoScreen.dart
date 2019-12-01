@@ -36,11 +36,13 @@ class _VideoState extends State<VideoScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: Stack(
+    return Scaffold(
+      backgroundColor: Colors.black38,
+      body: Stack(
         children: <Widget>[
           videoSection(),
           videoControls(),
+
           backToHomeScreen(context),
         ],
       ),
@@ -116,7 +118,7 @@ class _VideoState extends State<VideoScreen> {
             onPressed: () {
               Navigator.pop(context);
             },
-            icon: Icon(Icons.home, size: 30)),
+            icon: Icon(Icons.arrow_back_ios, size: 30)),
       ),
     );
   }
