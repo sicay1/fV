@@ -6,7 +6,9 @@ import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:provider/provider.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:vertical_tabs/vertical_tabs.dart';
-import 'package:videoplayer1/Data/VideoData.dart';
+import 'package:videoplayer1/Models/Beer_model.dart';
+import 'package:videoplayer1/Repository/Beer_Repository.dart';
+import 'package:videoplayer1/Repository/VideoData.dart';
 import 'About.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -30,6 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
 
   String barcodeScanRes = "";
+  List<ListBeerModel> _beers = new List<ListBeerModel>();
 
   @override
   void initState() {
@@ -38,6 +41,13 @@ class _HomeScreenState extends State<HomeScreen> {
       DeviceOrientation.landscapeLeft,
     ]);
     super.initState();
+    listenForBeers();
+  }
+
+  void listenForBeers() async {
+    final List<ListBeerModel> lBeers = await getBeers();
+    log(listBeerModelToJson(lBeers));
+    _beers.addAll(lBeers);
   }
 
   @override

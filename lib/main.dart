@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:global_configuration/global_configuration.dart';
+import 'Config/app_settings.config.dart';
 import 'route.dart';
 
-void main() => runApp(Home());
+void main() {
+  GlobalConfiguration().loadFromMap(appSettings);
+  runApp(Home());
+}
 
 class Home extends StatelessWidget {
   @override
