@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -32,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
 
   String barcodeScanRes = "";
-  List<ListBeerModel> _beers = new List<ListBeerModel>();
+  // List<BeerModel> _beers = new List<BeerModel>();
 
   @override
   void initState() {
@@ -45,9 +46,9 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void listenForBeers() async {
-    final List<ListBeerModel> lBeers = await getBeers();
-    log(listBeerModelToJson(lBeers));
-    _beers.addAll(lBeers);
+    final List<BeerModel> lBeers = await getBeers();
+    log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa ${jsonEncode(lBeers)}');
+    // _beers.addAll(lBeers);
   }
 
   @override

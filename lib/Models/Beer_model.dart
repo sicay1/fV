@@ -1,305 +1,327 @@
-// To parse this JSON data, do
-//
-//     final listBeerModel = listBeerModelFromJson(jsonString);
+class BeerListModel {
+  List<BeerModel> beerList;
+  BeerListModel({this.beerList});
 
-import 'dart:convert';
+  BeerListModel.fromJson(List<dynamic> json) {
+      beerList = new List<BeerModel>();
+      json.forEach((v) {
+        beerList.add(new BeerModel.fromJson(v));
+      });
+  }
 
-List<ListBeerModel> listBeerModelFromJson(String str) => List<ListBeerModel>.from(json.decode(str).map((x) => ListBeerModel.fromMap(x)));
-
-String listBeerModelToJson(List<ListBeerModel> data) => json.encode(List<String>.from(data.map((x) => x.toMap())));
-
-class ListBeerModel {
-    int id;
-    String name;
-    String tagline;
-    String firstBrewed;
-    String description;
-    String imageUrl;
-    double abv;
-    double ibu;
-    int targetFg;
-    double targetOg;
-    int ebc;
-    double srm;
-    double ph;
-    double attenuationLevel;
-    BoilVolume volume;
-    BoilVolume boilVolume;
-    Method method;
-    Ingredients ingredients;
-    List<String> foodPairing;
-    String brewersTips;
-    ContributedBy contributedBy;
-
-    ListBeerModel({
-        this.id,
-        this.name,
-        this.tagline,
-        this.firstBrewed,
-        this.description,
-        this.imageUrl,
-        this.abv,
-        this.ibu,
-        this.targetFg,
-        this.targetOg,
-        this.ebc,
-        this.srm,
-        this.ph,
-        this.attenuationLevel,
-        this.volume,
-        this.boilVolume,
-        this.method,
-        this.ingredients,
-        this.foodPairing,
-        this.brewersTips,
-        this.contributedBy,
-    });
-
-    factory ListBeerModel.fromMap(Map<String, dynamic> json) => ListBeerModel(
-        id: json["id"],
-        name: json["name"],
-        tagline: json["tagline"],
-        firstBrewed: json["first_brewed"],
-        description: json["description"],
-        imageUrl: json["image_url"],
-        abv: json["abv"].toDouble(),
-        ibu: json["ibu"] == null ? null : json["ibu"].toDouble(),
-        targetFg: json["target_fg"],
-        targetOg: json["target_og"].toDouble(),
-        ebc: json["ebc"] == null ? null : json["ebc"],
-        srm: json["srm"] == null ? null : json["srm"].toDouble(),
-        ph: json["ph"] == null ? null : json["ph"].toDouble(),
-        attenuationLevel: json["attenuation_level"].toDouble(),
-        volume: BoilVolume.fromMap(json["volume"]),
-        boilVolume: BoilVolume.fromMap(json["boil_volume"]),
-        method: Method.fromMap(json["method"]),
-        ingredients: Ingredients.fromMap(json["ingredients"]),
-        foodPairing: List<String>.from(json["food_pairing"].map((x) => x)),
-        brewersTips: json["brewers_tips"],
-        contributedBy: contributedByValues.map[json["contributed_by"]],
-    );
-
-    Map<String, dynamic> toMap() => {
-        "id": id,
-        "name": name,
-        "tagline": tagline,
-        "first_brewed": firstBrewed,
-        "description": description,
-        "image_url": imageUrl,
-        "abv": abv,
-        "ibu": ibu == null ? null : ibu,
-        "target_fg": targetFg,
-        "target_og": targetOg,
-        "ebc": ebc == null ? null : ebc,
-        "srm": srm == null ? null : srm,
-        "ph": ph == null ? null : ph,
-        "attenuation_level": attenuationLevel,
-        "volume": volume.toMap(),
-        "boil_volume": boilVolume.toMap(),
-        "method": method.toMap(),
-        "ingredients": ingredients.toMap(),
-        "food_pairing": List<String>.from(foodPairing.map((x) => x)),
-        "brewers_tips": brewersTips,
-        "contributed_by": contributedByValues.reverse[contributedBy],
-    };
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.beerList != null) {
+      this.beerList.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
 }
 
-class BoilVolume {
-    double value;
-    Unit unit;
 
-    BoilVolume({
-        this.value,
-        this.unit,
-    });
+class BeerModel {
+  int id;
+  String name;
+  String tagline;
+  String firstBrewed;
+  String description;
+  String imageUrl;
+  double abv;
+  int ibu;
+  int targetFg;
+  double targetOg;
+  int ebc;
+  double srm;
+  double ph;
+  double attenuationLevel;
+  Volume volume;
+  Volume boilVolume;
+  Method method;
+  Ingredients ingredients;
+  List<String> foodPairing;
+  String brewersTips;
+  String contributedBy;
 
-    factory BoilVolume.fromMap(Map<String, dynamic> json) => BoilVolume(
-        value: json["value"].toDouble(),
-        unit: unitValues.map[json["unit"]],
-    );
+  BeerModel(
+      {this.id,
+      this.name,
+      this.tagline,
+      this.firstBrewed,
+      this.description,
+      this.imageUrl,
+      this.abv,
+      this.ibu,
+      this.targetFg,
+      this.targetOg,
+      this.ebc,
+      this.srm,
+      this.ph,
+      this.attenuationLevel,
+      this.volume,
+      this.boilVolume,
+      this.method,
+      this.ingredients,
+      this.foodPairing,
+      this.brewersTips,
+      this.contributedBy});
 
-    Map<String, dynamic> toMap() => {
-        "value": value,
-        "unit": unitValues.reverse[unit],
-    };
+  BeerModel.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    tagline = json['tagline'];
+    firstBrewed = json['first_brewed'];
+    description = json['description'];
+    imageUrl = json['image_url'];
+    abv = json['abv'].toDouble();
+    ibu = json['ibu'] != null ? json['ibu'].toInt() : null;
+    targetFg = json['target_fg'];
+    targetOg = json['target_og'].toDouble();
+    ebc = json['ebc'];
+    srm = json['srm'] != null ? json['srm'].toDouble() : 0;
+    ph = json['ph'] != null ? json['ph'].toDouble() : 0;
+    attenuationLevel = json['attenuation_level'].toDouble();
+    volume =
+        json['volume'] != null ? new Volume.fromJson(json['volume']) : null;
+    boilVolume = json['boil_volume'] != null
+        ? new Volume.fromJson(json['boil_volume'])
+        : null;
+    method =
+        json['method'] != null ? new Method.fromJson(json['method']) : null;
+    ingredients = json['ingredients'] != null
+        ? new Ingredients.fromJson(json['ingredients'])
+        : null;
+    foodPairing = json['food_pairing'].cast<String>();
+    brewersTips = json['brewers_tips'];
+    contributedBy = json['contributed_by'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['name'] = this.name;
+    data['tagline'] = this.tagline;
+    data['first_brewed'] = this.firstBrewed;
+    data['description'] = this.description;
+    data['image_url'] = this.imageUrl;
+    data['abv'] = this.abv;
+    data['ibu'] = this.ibu;
+    data['target_fg'] = this.targetFg;
+    data['target_og'] = this.targetOg;
+    data['ebc'] = this.ebc;
+    data['srm'] = this.srm;
+    data['ph'] = this.ph;
+    data['attenuation_level'] = this.attenuationLevel;
+    if (this.volume != null) {
+      data['volume'] = this.volume.toJson();
+    }
+    if (this.boilVolume != null) {
+      data['boil_volume'] = this.boilVolume.toJson();
+    }
+    if (this.method != null) {
+      data['method'] = this.method.toJson();
+    }
+    if (this.ingredients != null) {
+      data['ingredients'] = this.ingredients.toJson();
+    }
+    data['food_pairing'] = this.foodPairing;
+    data['brewers_tips'] = this.brewersTips;
+    data['contributed_by'] = this.contributedBy;
+    return data;
+  }
 }
 
-enum Unit { LITRES, GRAMS, KILOGRAMS, CELSIUS }
+class Volume {
+  int value;
+  String unit;
 
-final unitValues = EnumValues({
-    "celsius": Unit.CELSIUS,
-    "grams": Unit.GRAMS,
-    "kilograms": Unit.KILOGRAMS,
-    "litres": Unit.LITRES
-});
+  Volume({this.value, this.unit});
 
-enum ContributedBy { SAM_MASON_SAMJBMASON, ALI_SKINNER_ALI_SKINNER }
+  Volume.fromJson(Map<String, dynamic> json) {
+    value = json['value'];
+    unit = json['unit'];
+  }
 
-final contributedByValues = EnumValues({
-    "Ali Skinner <AliSkinner>": ContributedBy.ALI_SKINNER_ALI_SKINNER,
-    "Sam Mason <samjbmason>": ContributedBy.SAM_MASON_SAMJBMASON
-});
-
-class Ingredients {
-    List<Malt> malt;
-    List<Hop> hops;
-    String yeast;
-
-    Ingredients({
-        this.malt,
-        this.hops,
-        this.yeast,
-    });
-
-    factory Ingredients.fromMap(Map<String, dynamic> json) => Ingredients(
-        malt: List<Malt>.from(json["malt"].map((x) => Malt.fromMap(x))),
-        hops: List<Hop>.from(json["hops"].map((x) => Hop.fromMap(x))),
-        yeast: json["yeast"],
-    );
-
-    Map<String, dynamic> toMap() => {
-        "malt": List<String>.from(malt.map((x) => x.toMap())),
-        "hops": List<String>.from(hops.map((x) => x.toMap())),
-        "yeast": yeast,
-    };
-}
-
-class Hop {
-    String name;
-    BoilVolume amount;
-    Add add;
-    Attribute attribute;
-
-    Hop({
-        this.name,
-        this.amount,
-        this.add,
-        this.attribute,
-    });
-
-    factory Hop.fromMap(Map<String, dynamic> json) => Hop(
-        name: json["name"],
-        amount: BoilVolume.fromMap(json["amount"]),
-        add: addValues.map[json["add"]],
-        attribute: attributeValues.map[json["attribute"]],
-    );
-
-    Map<String, dynamic> toMap() => {
-        "name": name,
-        "amount": amount.toMap(),
-        "add": addValues.reverse[add],
-        "attribute": attributeValues.reverse[attribute],
-    };
-}
-
-enum Add { START, MIDDLE, END, DRY_HOP }
-
-final addValues = EnumValues({
-    "dry hop": Add.DRY_HOP,
-    "end": Add.END,
-    "middle": Add.MIDDLE,
-    "start": Add.START
-});
-
-enum Attribute { BITTER, FLAVOUR, AROMA, ATTRIBUTE_FLAVOUR }
-
-final attributeValues = EnumValues({
-    "aroma": Attribute.AROMA,
-    "Flavour": Attribute.ATTRIBUTE_FLAVOUR,
-    "bitter": Attribute.BITTER,
-    "flavour": Attribute.FLAVOUR
-});
-
-class Malt {
-    String name;
-    BoilVolume amount;
-
-    Malt({
-        this.name,
-        this.amount,
-    });
-
-    factory Malt.fromMap(Map<String, dynamic> json) => Malt(
-        name: json["name"],
-        amount: BoilVolume.fromMap(json["amount"]),
-    );
-
-    Map<String, dynamic> toMap() => {
-        "name": name,
-        "amount": amount.toMap(),
-    };
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['value'] = this.value;
+    data['unit'] = this.unit;
+    return data;
+  }
 }
 
 class Method {
-    List<MashTemp> mashTemp;
-    Fermentation fermentation;
-    String twist;
+  List<MashTemp> mashTemp;
+  Fermentation fermentation;
+  String twist;
 
-    Method({
-        this.mashTemp,
-        this.fermentation,
-        this.twist,
-    });
+  Method({this.mashTemp, this.fermentation, this.twist});
 
-    factory Method.fromMap(Map<String, dynamic> json) => Method(
-        mashTemp: List<MashTemp>.from(json["mash_temp"].map((x) => MashTemp.fromMap(x))),
-        fermentation: Fermentation.fromMap(json["fermentation"]),
-        twist: json["twist"] == null ? null : json["twist"],
-    );
+  Method.fromJson(Map<String, dynamic> json) {
+    if (json['mash_temp'] != null) {
+      mashTemp = new List<MashTemp>();
+      json['mash_temp'].forEach((v) {
+        mashTemp.add(new MashTemp.fromJson(v));
+      });
+    }
+    fermentation = json['fermentation'] != null
+        ? new Fermentation.fromJson(json['fermentation'])
+        : null;
+    twist = json['twist'];
+  }
 
-    Map<String, dynamic> toMap() => {
-        "mash_temp": List<String>.from(mashTemp.map((x) => x.toMap())),
-        "fermentation": fermentation.toMap(),
-        "twist": twist == null ? null : twist,
-    };
-}
-
-class Fermentation {
-    BoilVolume temp;
-
-    Fermentation({
-        this.temp,
-    });
-
-    factory Fermentation.fromMap(Map<String, dynamic> json) => Fermentation(
-        temp: BoilVolume.fromMap(json["temp"]),
-    );
-
-    Map<String, dynamic> toMap() => {
-        "temp": temp.toMap(),
-    };
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.mashTemp != null) {
+      data['mash_temp'] = this.mashTemp.map((v) => v.toJson()).toList();
+    }
+    if (this.fermentation != null) {
+      data['fermentation'] = this.fermentation.toJson();
+    }
+    data['twist'] = this.twist;
+    return data;
+  }
 }
 
 class MashTemp {
-    BoilVolume temp;
-    int duration;
+  Volume temp;
+  int duration;
 
-    MashTemp({
-        this.temp,
-        this.duration,
-    });
+  MashTemp({this.temp, this.duration});
 
-    factory MashTemp.fromMap(Map<String, dynamic> json) => MashTemp(
-        temp: BoilVolume.fromMap(json["temp"]),
-        duration: json["duration"] == null ? null : json["duration"],
-    );
+  MashTemp.fromJson(Map<String, dynamic> json) {
+    temp = json['temp'] != null ? new Volume.fromJson(json['temp']) : null;
+    duration = json['duration'];
+  }
 
-    Map<String, dynamic> toMap() => {
-        "temp": temp.toMap(),
-        "duration": duration == null ? null : duration,
-    };
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.temp != null) {
+      data['temp'] = this.temp.toJson();
+    }
+    data['duration'] = this.duration;
+    return data;
+  }
 }
 
-class EnumValues<T> {
-    Map<String, T> map;
-    Map<T, String> reverseMap;
+class Fermentation {
+  Volume temp;
 
-    EnumValues(this.map);
+  Fermentation({this.temp});
 
-    Map<T, String> get reverse {
-        if (reverseMap == null) {
-            reverseMap = map.map((k, v) => new MapEntry(v, k));
-        }
-        return reverseMap;
+  Fermentation.fromJson(Map<String, dynamic> json) {
+    temp = json['temp'] != null ? new Volume.fromJson(json['temp']) : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.temp != null) {
+      data['temp'] = this.temp.toJson();
     }
+    return data;
+  }
+}
+
+class Ingredients {
+  List<Malt> malt;
+  List<Hops> hops;
+  String yeast;
+
+  Ingredients({this.malt, this.hops, this.yeast});
+
+  Ingredients.fromJson(Map<String, dynamic> json) {
+    if (json['malt'] != null) {
+      malt = new List<Malt>();
+      json['malt'].forEach((v) {
+        malt.add(new Malt.fromJson(v));
+      });
+    }
+    if (json['hops'] != null) {
+      hops = new List<Hops>();
+      json['hops'].forEach((v) {
+        hops.add(new Hops.fromJson(v));
+      });
+    }
+    yeast = json['yeast'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.malt != null) {
+      data['malt'] = this.malt.map((v) => v.toJson()).toList();
+    }
+    if (this.hops != null) {
+      data['hops'] = this.hops.map((v) => v.toJson()).toList();
+    }
+    data['yeast'] = this.yeast;
+    return data;
+  }
+}
+
+class Malt {
+  String name;
+  Amount amount;
+
+  Malt({this.name, this.amount});
+
+  Malt.fromJson(Map<String, dynamic> json) {
+    name = json['name'];
+    amount =
+        json['amount'] != null ? new Amount.fromJson(json['amount']) : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['name'] = this.name;
+    if (this.amount != null) {
+      data['amount'] = this.amount.toJson();
+    }
+    return data;
+  }
+}
+
+class Amount {
+  double value;
+  String unit;
+
+  Amount({this.value, this.unit});
+
+  Amount.fromJson(Map<String, dynamic> json) {
+    value = json['value'].toDouble();
+    unit = json['unit'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['value'] = this.value;
+    data['unit'] = this.unit;
+    return data;
+  }
+}
+
+class Hops {
+  String name;
+  Amount amount;
+  String add;
+  String attribute;
+
+  Hops({this.name, this.amount, this.add, this.attribute});
+
+  Hops.fromJson(Map<String, dynamic> json) {
+    name = json['name'];
+    amount =
+        json['amount'] != null ? new Amount.fromJson(json['amount']) : null;
+    add = json['add'];
+    attribute = json['attribute'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['name'] = this.name;
+    if (this.amount != null) {
+      data['amount'] = this.amount.toJson();
+    }
+    data['add'] = this.add;
+    data['attribute'] = this.attribute;
+    return data;
+  }
 }
